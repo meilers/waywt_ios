@@ -1,0 +1,628 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		17806FB50D184DF5A4BBE664 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 42704FCF12064064A33F59AA /* libPods.a */; };
+		FA5E6E9218CD101300E48855 /* WAYApiClient.m in Sources */ = {isa = PBXBuildFile; fileRef = FA5E6E9118CD101300E48855 /* WAYApiClient.m */; };
+		FAC6B45818CD463400583426 /* WAYPostUtility.m in Sources */ = {isa = PBXBuildFile; fileRef = FAC6B45718CD463400583426 /* WAYPostUtility.m */; };
+		FAC6B46118CD56B100583426 /* WAYPost.m in Sources */ = {isa = PBXBuildFile; fileRef = FAC6B46018CD56B100583426 /* WAYPost.m */; };
+		FAC6B46418CD56B100583426 /* WAYComment.m in Sources */ = {isa = PBXBuildFile; fileRef = FAC6B46318CD56B100583426 /* WAYComment.m */; };
+		FAE7D1EA18CD0CF3005A5142 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FAE7D1E918CD0CF3005A5142 /* Foundation.framework */; };
+		FAE7D1EC18CD0CF3005A5142 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FAE7D1EB18CD0CF3005A5142 /* CoreGraphics.framework */; };
+		FAE7D1EE18CD0CF3005A5142 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FAE7D1ED18CD0CF3005A5142 /* UIKit.framework */; };
+		FAE7D1F018CD0CF3005A5142 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FAE7D1EF18CD0CF3005A5142 /* CoreData.framework */; };
+		FAE7D1F618CD0CF3005A5142 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = FAE7D1F418CD0CF3005A5142 /* InfoPlist.strings */; };
+		FAE7D1F818CD0CF3005A5142 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = FAE7D1F718CD0CF3005A5142 /* main.m */; };
+		FAE7D1FC18CD0CF3005A5142 /* WAYAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = FAE7D1FB18CD0CF3005A5142 /* WAYAppDelegate.m */; };
+		FAE7D1FF18CD0CF3005A5142 /* Main_iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FAE7D1FD18CD0CF3005A5142 /* Main_iPhone.storyboard */; };
+		FAE7D20218CD0CF3005A5142 /* Main_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FAE7D20018CD0CF3005A5142 /* Main_iPad.storyboard */; };
+		FAE7D20518CD0CF3005A5142 /* WAYWT.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = FAE7D20318CD0CF3005A5142 /* WAYWT.xcdatamodeld */; };
+		FAE7D20818CD0CF3005A5142 /* WAYPostsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FAE7D20718CD0CF3005A5142 /* WAYPostsViewController.m */; };
+		FAE7D20B18CD0CF3005A5142 /* WAYCommentsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FAE7D20A18CD0CF3005A5142 /* WAYCommentsViewController.m */; };
+		FAE7D20D18CD0CF3005A5142 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FAE7D20C18CD0CF3005A5142 /* Images.xcassets */; };
+		FAE7D21418CD0CF3005A5142 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FAE7D21318CD0CF3005A5142 /* XCTest.framework */; };
+		FAE7D21518CD0CF3005A5142 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FAE7D1E918CD0CF3005A5142 /* Foundation.framework */; };
+		FAE7D21618CD0CF3005A5142 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FAE7D1ED18CD0CF3005A5142 /* UIKit.framework */; };
+		FAE7D21718CD0CF3005A5142 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FAE7D1EF18CD0CF3005A5142 /* CoreData.framework */; };
+		FAE7D21F18CD0CF3005A5142 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = FAE7D21D18CD0CF3005A5142 /* InfoPlist.strings */; };
+		FAE7D22118CD0CF3005A5142 /* WAYWTTests.m in Sources */ = {isa = PBXBuildFile; fileRef = FAE7D22018CD0CF3005A5142 /* WAYWTTests.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		FAE7D21818CD0CF3005A5142 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FAE7D1DE18CD0CF3005A5142 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = FAE7D1E518CD0CF3005A5142;
+			remoteInfo = WAYWT;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		28C38DBB8215495A93A4EA44 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
+		42704FCF12064064A33F59AA /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		FA5E6E9018CD101300E48855 /* WAYApiClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAYApiClient.h; sourceTree = "<group>"; };
+		FA5E6E9118CD101300E48855 /* WAYApiClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAYApiClient.m; sourceTree = "<group>"; };
+		FAC6B45618CD463400583426 /* WAYPostUtility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAYPostUtility.h; sourceTree = "<group>"; };
+		FAC6B45718CD463400583426 /* WAYPostUtility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAYPostUtility.m; sourceTree = "<group>"; };
+		FAC6B45F18CD56B100583426 /* WAYPost.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAYPost.h; sourceTree = "<group>"; };
+		FAC6B46018CD56B100583426 /* WAYPost.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAYPost.m; sourceTree = "<group>"; };
+		FAC6B46218CD56B100583426 /* WAYComment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAYComment.h; sourceTree = "<group>"; };
+		FAC6B46318CD56B100583426 /* WAYComment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAYComment.m; sourceTree = "<group>"; };
+		FAE7D1E618CD0CF3005A5142 /* WAYWT.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WAYWT.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		FAE7D1E918CD0CF3005A5142 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		FAE7D1EB18CD0CF3005A5142 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		FAE7D1ED18CD0CF3005A5142 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		FAE7D1EF18CD0CF3005A5142 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		FAE7D1F318CD0CF3005A5142 /* WAYWT-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "WAYWT-Info.plist"; sourceTree = "<group>"; };
+		FAE7D1F518CD0CF3005A5142 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		FAE7D1F718CD0CF3005A5142 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		FAE7D1F918CD0CF3005A5142 /* WAYWT-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "WAYWT-Prefix.pch"; sourceTree = "<group>"; };
+		FAE7D1FA18CD0CF3005A5142 /* WAYAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WAYAppDelegate.h; sourceTree = "<group>"; };
+		FAE7D1FB18CD0CF3005A5142 /* WAYAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WAYAppDelegate.m; sourceTree = "<group>"; };
+		FAE7D1FE18CD0CF3005A5142 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main_iPhone.storyboard; sourceTree = "<group>"; };
+		FAE7D20118CD0CF3005A5142 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main_iPad.storyboard; sourceTree = "<group>"; };
+		FAE7D20418CD0CF3005A5142 /* WAYWT.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = WAYWT.xcdatamodel; sourceTree = "<group>"; };
+		FAE7D20618CD0CF3005A5142 /* WAYPostsViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WAYPostsViewController.h; sourceTree = "<group>"; };
+		FAE7D20718CD0CF3005A5142 /* WAYPostsViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WAYPostsViewController.m; sourceTree = "<group>"; };
+		FAE7D20918CD0CF3005A5142 /* WAYCommentsViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WAYCommentsViewController.h; sourceTree = "<group>"; };
+		FAE7D20A18CD0CF3005A5142 /* WAYCommentsViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WAYCommentsViewController.m; sourceTree = "<group>"; };
+		FAE7D20C18CD0CF3005A5142 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		FAE7D21218CD0CF3005A5142 /* WAYWTTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WAYWTTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		FAE7D21318CD0CF3005A5142 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
+		FAE7D21C18CD0CF3005A5142 /* WAYWTTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "WAYWTTests-Info.plist"; sourceTree = "<group>"; };
+		FAE7D21E18CD0CF3005A5142 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		FAE7D22018CD0CF3005A5142 /* WAYWTTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WAYWTTests.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		FAE7D1E318CD0CF3005A5142 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FAE7D1EC18CD0CF3005A5142 /* CoreGraphics.framework in Frameworks */,
+				FAE7D1F018CD0CF3005A5142 /* CoreData.framework in Frameworks */,
+				FAE7D1EE18CD0CF3005A5142 /* UIKit.framework in Frameworks */,
+				FAE7D1EA18CD0CF3005A5142 /* Foundation.framework in Frameworks */,
+				17806FB50D184DF5A4BBE664 /* libPods.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FAE7D20F18CD0CF3005A5142 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FAE7D21418CD0CF3005A5142 /* XCTest.framework in Frameworks */,
+				FAE7D21718CD0CF3005A5142 /* CoreData.framework in Frameworks */,
+				FAE7D21618CD0CF3005A5142 /* UIKit.framework in Frameworks */,
+				FAE7D21518CD0CF3005A5142 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		FA5E6E8B18CD0ECA00E48855 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				FAE7D20618CD0CF3005A5142 /* WAYPostsViewController.h */,
+				FAE7D20718CD0CF3005A5142 /* WAYPostsViewController.m */,
+				FAE7D20918CD0CF3005A5142 /* WAYCommentsViewController.h */,
+				FAE7D20A18CD0CF3005A5142 /* WAYCommentsViewController.m */,
+			);
+			name = Controllers;
+			sourceTree = "<group>";
+		};
+		FA5E6E8C18CD0ED100E48855 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Views;
+			sourceTree = "<group>";
+		};
+		FA5E6E8D18CD0EDF00E48855 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				FAC6B45F18CD56B100583426 /* WAYPost.h */,
+				FAC6B46018CD56B100583426 /* WAYPost.m */,
+				FAC6B46218CD56B100583426 /* WAYComment.h */,
+				FAC6B46318CD56B100583426 /* WAYComment.m */,
+			);
+			name = Models;
+			sourceTree = "<group>";
+		};
+		FA5E6E8E18CD0F7800E48855 /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				FAC6B45618CD463400583426 /* WAYPostUtility.h */,
+				FAC6B45718CD463400583426 /* WAYPostUtility.m */,
+			);
+			name = Utilities;
+			sourceTree = "<group>";
+		};
+		FA5E6E8F18CD0FF600E48855 /* Managers */ = {
+			isa = PBXGroup;
+			children = (
+				FA5E6E9018CD101300E48855 /* WAYApiClient.h */,
+				FA5E6E9118CD101300E48855 /* WAYApiClient.m */,
+			);
+			name = Managers;
+			sourceTree = "<group>";
+		};
+		FAE7D1DD18CD0CF3005A5142 = {
+			isa = PBXGroup;
+			children = (
+				FAE7D1F118CD0CF3005A5142 /* WAYWT */,
+				FAE7D21A18CD0CF3005A5142 /* WAYWTTests */,
+				FAE7D1E818CD0CF3005A5142 /* Frameworks */,
+				FAE7D1E718CD0CF3005A5142 /* Products */,
+				28C38DBB8215495A93A4EA44 /* Pods.xcconfig */,
+			);
+			sourceTree = "<group>";
+		};
+		FAE7D1E718CD0CF3005A5142 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				FAE7D1E618CD0CF3005A5142 /* WAYWT.app */,
+				FAE7D21218CD0CF3005A5142 /* WAYWTTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		FAE7D1E818CD0CF3005A5142 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				FAE7D1E918CD0CF3005A5142 /* Foundation.framework */,
+				FAE7D1EB18CD0CF3005A5142 /* CoreGraphics.framework */,
+				FAE7D1ED18CD0CF3005A5142 /* UIKit.framework */,
+				FAE7D1EF18CD0CF3005A5142 /* CoreData.framework */,
+				FAE7D21318CD0CF3005A5142 /* XCTest.framework */,
+				42704FCF12064064A33F59AA /* libPods.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		FAE7D1F118CD0CF3005A5142 /* WAYWT */ = {
+			isa = PBXGroup;
+			children = (
+				FA5E6E8D18CD0EDF00E48855 /* Models */,
+				FA5E6E8B18CD0ECA00E48855 /* Controllers */,
+				FA5E6E8C18CD0ED100E48855 /* Views */,
+				FA5E6E8F18CD0FF600E48855 /* Managers */,
+				FA5E6E8E18CD0F7800E48855 /* Utilities */,
+				FAE7D1FA18CD0CF3005A5142 /* WAYAppDelegate.h */,
+				FAE7D1FB18CD0CF3005A5142 /* WAYAppDelegate.m */,
+				FAE7D20318CD0CF3005A5142 /* WAYWT.xcdatamodeld */,
+				FAE7D20C18CD0CF3005A5142 /* Images.xcassets */,
+				FAE7D20018CD0CF3005A5142 /* Main_iPad.storyboard */,
+				FAE7D1FD18CD0CF3005A5142 /* Main_iPhone.storyboard */,
+				FAE7D1F218CD0CF3005A5142 /* Supporting Files */,
+			);
+			path = WAYWT;
+			sourceTree = "<group>";
+		};
+		FAE7D1F218CD0CF3005A5142 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				FAE7D1F318CD0CF3005A5142 /* WAYWT-Info.plist */,
+				FAE7D1F418CD0CF3005A5142 /* InfoPlist.strings */,
+				FAE7D1F718CD0CF3005A5142 /* main.m */,
+				FAE7D1F918CD0CF3005A5142 /* WAYWT-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		FAE7D21A18CD0CF3005A5142 /* WAYWTTests */ = {
+			isa = PBXGroup;
+			children = (
+				FAE7D22018CD0CF3005A5142 /* WAYWTTests.m */,
+				FAE7D21B18CD0CF3005A5142 /* Supporting Files */,
+			);
+			path = WAYWTTests;
+			sourceTree = "<group>";
+		};
+		FAE7D21B18CD0CF3005A5142 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				FAE7D21C18CD0CF3005A5142 /* WAYWTTests-Info.plist */,
+				FAE7D21D18CD0CF3005A5142 /* InfoPlist.strings */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		FAE7D1E518CD0CF3005A5142 /* WAYWT */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = FAE7D22418CD0CF3005A5142 /* Build configuration list for PBXNativeTarget "WAYWT" */;
+			buildPhases = (
+				CAB6CB235788491B98B80A84 /* Check Pods Manifest.lock */,
+				FAE7D1E218CD0CF3005A5142 /* Sources */,
+				FAE7D1E318CD0CF3005A5142 /* Frameworks */,
+				FAE7D1E418CD0CF3005A5142 /* Resources */,
+				1ED85E5B49AB49CAA06FBD3B /* Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = WAYWT;
+			productName = WAYWT;
+			productReference = FAE7D1E618CD0CF3005A5142 /* WAYWT.app */;
+			productType = "com.apple.product-type.application";
+		};
+		FAE7D21118CD0CF3005A5142 /* WAYWTTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = FAE7D22718CD0CF3005A5142 /* Build configuration list for PBXNativeTarget "WAYWTTests" */;
+			buildPhases = (
+				FAE7D20E18CD0CF3005A5142 /* Sources */,
+				FAE7D20F18CD0CF3005A5142 /* Frameworks */,
+				FAE7D21018CD0CF3005A5142 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				FAE7D21918CD0CF3005A5142 /* PBXTargetDependency */,
+			);
+			name = WAYWTTests;
+			productName = WAYWTTests;
+			productReference = FAE7D21218CD0CF3005A5142 /* WAYWTTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		FAE7D1DE18CD0CF3005A5142 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				CLASSPREFIX = WAY;
+				LastUpgradeCheck = 0500;
+				ORGANIZATIONNAME = "Michael J. Eilers Smith";
+				TargetAttributes = {
+					FAE7D21118CD0CF3005A5142 = {
+						TestTargetID = FAE7D1E518CD0CF3005A5142;
+					};
+				};
+			};
+			buildConfigurationList = FAE7D1E118CD0CF3005A5142 /* Build configuration list for PBXProject "WAYWT" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = FAE7D1DD18CD0CF3005A5142;
+			productRefGroup = FAE7D1E718CD0CF3005A5142 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				FAE7D1E518CD0CF3005A5142 /* WAYWT */,
+				FAE7D21118CD0CF3005A5142 /* WAYWTTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		FAE7D1E418CD0CF3005A5142 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FAE7D20218CD0CF3005A5142 /* Main_iPad.storyboard in Resources */,
+				FAE7D20D18CD0CF3005A5142 /* Images.xcassets in Resources */,
+				FAE7D1FF18CD0CF3005A5142 /* Main_iPhone.storyboard in Resources */,
+				FAE7D1F618CD0CF3005A5142 /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FAE7D21018CD0CF3005A5142 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FAE7D21F18CD0CF3005A5142 /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		1ED85E5B49AB49CAA06FBD3B /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Pods-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		CAB6CB235788491B98B80A84 /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		FAE7D1E218CD0CF3005A5142 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FAE7D20818CD0CF3005A5142 /* WAYPostsViewController.m in Sources */,
+				FAE7D20518CD0CF3005A5142 /* WAYWT.xcdatamodeld in Sources */,
+				FAE7D20B18CD0CF3005A5142 /* WAYCommentsViewController.m in Sources */,
+				FAE7D1FC18CD0CF3005A5142 /* WAYAppDelegate.m in Sources */,
+				FAE7D1F818CD0CF3005A5142 /* main.m in Sources */,
+				FAC6B45818CD463400583426 /* WAYPostUtility.m in Sources */,
+				FAC6B46418CD56B100583426 /* WAYComment.m in Sources */,
+				FAC6B46118CD56B100583426 /* WAYPost.m in Sources */,
+				FA5E6E9218CD101300E48855 /* WAYApiClient.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FAE7D20E18CD0CF3005A5142 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FAE7D22118CD0CF3005A5142 /* WAYWTTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		FAE7D21918CD0CF3005A5142 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = FAE7D1E518CD0CF3005A5142 /* WAYWT */;
+			targetProxy = FAE7D21818CD0CF3005A5142 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		FAE7D1F418CD0CF3005A5142 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				FAE7D1F518CD0CF3005A5142 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		FAE7D1FD18CD0CF3005A5142 /* Main_iPhone.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				FAE7D1FE18CD0CF3005A5142 /* Base */,
+			);
+			name = Main_iPhone.storyboard;
+			sourceTree = "<group>";
+		};
+		FAE7D20018CD0CF3005A5142 /* Main_iPad.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				FAE7D20118CD0CF3005A5142 /* Base */,
+			);
+			name = Main_iPad.storyboard;
+			sourceTree = "<group>";
+		};
+		FAE7D21D18CD0CF3005A5142 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				FAE7D21E18CD0CF3005A5142 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		FAE7D22218CD0CF3005A5142 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		FAE7D22318CD0CF3005A5142 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		FAE7D22518CD0CF3005A5142 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 28C38DBB8215495A93A4EA44 /* Pods.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "WAYWT/WAYWT-Prefix.pch";
+				INFOPLIST_FILE = "WAYWT/WAYWT-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		FAE7D22618CD0CF3005A5142 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 28C38DBB8215495A93A4EA44 /* Pods.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "WAYWT/WAYWT-Prefix.pch";
+				INFOPLIST_FILE = "WAYWT/WAYWT-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+		FAE7D22818CD0CF3005A5142 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/WAYWT.app/WAYWT";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "WAYWT/WAYWT-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = "WAYWTTests/WAYWTTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Debug;
+		};
+		FAE7D22918CD0CF3005A5142 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/WAYWT.app/WAYWT";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "WAYWT/WAYWT-Prefix.pch";
+				INFOPLIST_FILE = "WAYWTTests/WAYWTTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		FAE7D1E118CD0CF3005A5142 /* Build configuration list for PBXProject "WAYWT" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FAE7D22218CD0CF3005A5142 /* Debug */,
+				FAE7D22318CD0CF3005A5142 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		FAE7D22418CD0CF3005A5142 /* Build configuration list for PBXNativeTarget "WAYWT" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FAE7D22518CD0CF3005A5142 /* Debug */,
+				FAE7D22618CD0CF3005A5142 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		FAE7D22718CD0CF3005A5142 /* Build configuration list for PBXNativeTarget "WAYWTTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FAE7D22818CD0CF3005A5142 /* Debug */,
+				FAE7D22918CD0CF3005A5142 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		FAE7D20318CD0CF3005A5142 /* WAYWT.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				FAE7D20418CD0CF3005A5142 /* WAYWT.xcdatamodel */,
+			);
+			currentVersion = FAE7D20418CD0CF3005A5142 /* WAYWT.xcdatamodel */;
+			path = WAYWT.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
+	};
+	rootObject = FAE7D1DE18CD0CF3005A5142 /* Project object */;
+}
