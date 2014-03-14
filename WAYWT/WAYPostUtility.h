@@ -9,7 +9,9 @@
 #import <Foundation/Foundation.h>
 
 
+
 @interface WAYPostUtility : NSObject
+
 
 + (void)fetchAndSyncPostsWithContext:(NSManagedObjectContext*)moc setObserver:(NSObject*)observer;
 

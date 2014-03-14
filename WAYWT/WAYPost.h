@@ -2,7 +2,7 @@
 //  WAYPost.h
 //  WAYWT
 //
-//  Created by Michael J. Eilers Smith on 2014-03-09.
+//  Created by Michael J. Eilers Smith on 2014-03-13.
 //  Copyright (c) 2014 Michael J. Eilers Smith. All rights reserved.
 //
 
@@ -22,5 +22,6 @@
 @property (nonatomic, retain) NSString * title;
 @property (nonatomic, retain) NSNumber * type;
 @property (nonatomic, retain) NSNumber * ups;
+@property (nonatomic, retain) NSString * domain;
 
 @end

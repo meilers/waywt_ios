@@ -12,6 +12,13 @@
 
 static dispatch_semaphore_t _postSyncSemaphore;
 
+enum PostType : NSUInteger {
+    INVALID = 0,
+    WAYWT = 1,
+    OUTFIT_FEEDBACK = 2,
+    RECENT_PURCHASES = 3
+};
+
 @implementation WAYPostUtility
 
 + (void)fetchAndSyncPostsWithContext:(NSManagedObjectContext*)moc setObserver:(NSObject*)observer
@@ -21,7 +28,7 @@ static dispatch_semaphore_t _postSyncSemaphore;
     NSArray *objects;
     NSDictionary *params;
     
-    NSString *t = @"";
+    NSString *t = @"week";
     NSString *after = @"";
     
     int i = 0;
@@ -32,7 +39,7 @@ static dispatch_semaphore_t _postSyncSemaphore;
         objects = [NSArray arrayWithObjects:t, after, nil];
         params = [NSDictionary dictionaryWithObjects:objects forKeys:keys];
         
-        [[WAYApiClient sharedClient] GET:@"/r/malefashionadvice/hot.json" parameters:params success:^(NSURLSessionDataTask * __unused task, id JSON) {
+        [[WAYApiClient sharedClient] GET:@"/r/malefashionadvice/top.json" parameters:params success:^(NSURLSessionDataTask * __unused task, id JSON) {
             
             // Background thread for sync
             NSPersistentStoreCoordinator *mainThreadContextStoreCoordinator = [moc persistentStoreCoordinator];
@@ -72,6 +79,7 @@ static dispatch_semaphore_t _postSyncSemaphore;
                 
                 
                 /** START SYNCHRONIZE **/
+                
                 for (NSDictionary *remotePostData in remotePosts) {
                     
                     NSDictionary *remotePost = [remotePostData objectForKey:@"data"];
@@ -80,15 +88,19 @@ static dispatch_semaphore_t _postSyncSemaphore;
                     // Insert
                     if( ![[localPostMap allKeys] containsObject:remotePostId] )
                     {
-                        WAYPost *newPost = (WAYPost *)[NSEntityDescription insertNewObjectForEntityForName:@"WAYPost" inManagedObjectContext:newMoc];
-                        newPost.postId = remotePostId;
-                        newPost.author = [remotePost objectForKey:@"author"];
-                        newPost.created = [remotePost objectForKey:@"created"];
-                        newPost.title = [remotePost objectForKey:@"title"];
-                        newPost.permalink = [remotePost objectForKey:@"permalink"];
-                        newPost.ups = [remotePost objectForKey:@"ups"];
-                        newPost.downs = [remotePost objectForKey:@"downs"];
-                        
+                            WAYPost *newPost = (WAYPost *)[NSEntityDescription insertNewObjectForEntityForName:@"WAYPost" inManagedObjectContext:newMoc];
+                            newPost.postId = remotePostId;
+                            newPost.author = [remotePost objectForKey:@"author"];
+                            newPost.created = [remotePost objectForKey:@"created"];
+                            newPost.title = [remotePost objectForKey:@"title"];
+                            newPost.domain = [remotePost objectForKey:@"domain"];
+                            newPost.permalink = [remotePost objectForKey:@"permalink"];
+                            newPost.ups = [remotePost objectForKey:@"ups"];
+                            newPost.downs = [remotePost objectForKey:@"downs"];
+                            newPost.type = [NSNumber numberWithInt:[self retrievePostTypeWithPost:newPost setIsMale:YES setIsTeen:NO]];
+                            
+//                            if( [newPost.type isEqualToNumber:[NSNumber numberWithInt:INVALID]] )
+//                                [newMoc deleteObject:newPost];
                     }
                     // Update
                     else
@@ -98,9 +110,11 @@ static dispatch_semaphore_t _postSyncSemaphore;
                         updatedPost.author = [remotePost objectForKey:@"author"];
                         updatedPost.created = [remotePost objectForKey:@"created"];
                         updatedPost.title = [remotePost objectForKey:@"title"];
+                        updatedPost.domain = [remotePost objectForKey:@"domain"];
                         updatedPost.permalink = [remotePost objectForKey:@"permalink"];
                         updatedPost.ups = [remotePost objectForKey:@"ups"];
                         updatedPost.downs = [remotePost objectForKey:@"downs"];
+                        updatedPost.type = [NSNumber numberWithInt:[self retrievePostTypeWithPost:updatedPost setIsMale:YES setIsTeen:NO]];
                         
                         [newMoc refreshObject:updatedPost mergeChanges:true];
                         [localPostMap removeObjectForKey:remotePostId];
@@ -261,6 +275,45 @@ static dispatch_semaphore_t _postSyncSemaphore;
 //    }];
 }
 
+
++ (int)retrievePostTypeWithPost:(WAYPost*)post setIsMale:(BOOL)isMale setIsTeen:(BOOL)isTeen
+{
+	if( isMale )
+    {
+        if( !isTeen )
+        {
+            if( ![post.domain isEqualToString:@"self.malefashionadvice"] || [[post.title lowercaseString] rangeOfString:@"announcement"].location != NSNotFound || [[post.title lowercaseString] rangeOfString:@"phone"].location != NSNotFound || [[post.title lowercaseString] rangeOfString:@"interest"].location != NSNotFound || [[post.title lowercaseString] rangeOfString:@"top"].location != NSNotFound || ([[post.title lowercaseString] rangeOfString:@"waywt"].location == NSNotFound && [[post.title lowercaseString] rangeOfString:@"outfit feedback"].location == NSNotFound && [[post.title lowercaseString] rangeOfString:@"recent purchases"].location == NSNotFound) )
+                return INVALID;
+        }
+        else
+        {
+            if( ![post.domain isEqualToString:@"self.TeenMFA"] || [[post.title lowercaseString] rangeOfString:@"announcement"].location != NSNotFound || [[post.title lowercaseString] rangeOfString:@"phone"].location != NSNotFound || [[post.title lowercaseString] rangeOfString:@"interest"].location != NSNotFound || [[post.title lowercaseString] rangeOfString:@"top"].location != NSNotFound || ([[post.title lowercaseString] rangeOfString:@"waywt"].location == NSNotFound && [[post.title lowercaseString] rangeOfString:@"outfit feedback"].location == NSNotFound && [[post.title lowercaseString] rangeOfString:@"recent purchases"].location == NSNotFound) )
+                return INVALID;
+        }
+    }
+    else
+    {
+        if( !isTeen )
+        {
+            if( ![post.domain isEqualToString:@"self.femalefashionadvice"] || [[post.title lowercaseString] rangeOfString:@"announcement"].location != NSNotFound || [[post.title lowercaseString] rangeOfString:@"phone"].location != NSNotFound || [[post.title lowercaseString] rangeOfString:@"interest"].location != NSNotFound || [[post.title lowercaseString] rangeOfString:@"top"].location != NSNotFound || ([[post.title lowercaseString] rangeOfString:@"waywt"].location == NSNotFound && [[post.title lowercaseString] rangeOfString:@"outfit feedback"].location == NSNotFound && [[post.title lowercaseString] rangeOfString:@"recent purchases"].location == NSNotFound) )
+                return INVALID;
+        }
+        else
+        {
+            if( ![post.domain isEqualToString:@"self.TeenFFA"] || [[post.title lowercaseString] rangeOfString:@"announcement"].location != NSNotFound || [[post.title lowercaseString] rangeOfString:@"phone"].location != NSNotFound || [[post.title lowercaseString] rangeOfString:@"interest"].location != NSNotFound || [[post.title lowercaseString] rangeOfString:@"top"].location != NSNotFound || ([[post.title lowercaseString] rangeOfString:@"waywt"].location == NSNotFound && [[post.title lowercaseString] rangeOfString:@"outfit feedback"].location == NSNotFound && [[post.title lowercaseString] rangeOfString:@"recent purchases"].location == NSNotFound) )
+                return INVALID;
+        }
+    }
+    
+    if( [post.title rangeOfString:@"waywt"].location != NSNotFound)
+        return WAYWT;
+    else if( [[post.title lowercaseString] rangeOfString:@"outfit feedback"].location != NSNotFound )
+        return OUTFIT_FEEDBACK;
+    else if( [[post.title lowercaseString] rangeOfString:@"recent purchases"].location != NSNotFound )
+        return RECENT_PURCHASES;
+    else
+        return INVALID;
+}
 
 + (dispatch_semaphore_t)postSyncSemaphore
 {
