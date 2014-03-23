@@ -24,133 +24,354 @@ enum PostType : NSUInteger {
 + (void)fetchAndSyncPostsWithContext:(NSManagedObjectContext*)moc setObserver:(NSObject*)observer
 {
     
-    NSArray *keys;
-    NSArray *objects;
-    NSDictionary *params;
+    __block NSString *t = @"";
+    __block NSString *after = @"";
     
-    NSString *t = @"week";
-    NSString *after = @"";
+    __block int i = 0;
     
-    int i = 0;
+    // Background thread for sync
+    NSPersistentStoreCoordinator *mainThreadContextStoreCoordinator = [moc persistentStoreCoordinator];
     
-    while( after != nil && i < 1 )
-    {
-        keys = [NSArray arrayWithObjects:@"t", @"after", nil];
-        objects = [NSArray arrayWithObjects:t, after, nil];
-        params = [NSDictionary dictionaryWithObjects:objects forKeys:keys];
+    // Background thread for sync
+    dispatch_queue_t request_queue = dispatch_queue_create("com.sobremesa.waywt.syncPosts", NULL);
+    
+    dispatch_async(request_queue, ^{
         
-        [[WAYApiClient sharedClient] GET:@"/r/malefashionadvice/top.json" parameters:params success:^(NSURLSessionDataTask * __unused task, id JSON) {
-            
-            // Background thread for sync
-            NSPersistentStoreCoordinator *mainThreadContextStoreCoordinator = [moc persistentStoreCoordinator];
-            dispatch_queue_t request_queue = dispatch_queue_create("com.sobremesa.waywt.syncPosts", NULL);
-            
-            dispatch_async(request_queue, ^{
-                
-                // The sync is a critical section
-                dispatch_semaphore_wait(self.postSyncSemaphore, DISPATCH_TIME_FOREVER);
-                
-                // Create a new managed object context
-                // Set its persistent store coordinator
-                NSManagedObjectContext *newMoc = [[NSManagedObjectContext alloc] init];
-                [newMoc setPersistentStoreCoordinator:mainThreadContextStoreCoordinator];
-                
-                
-                // Web Service Results
-                NSDictionary *remoteData = [JSON objectForKey:@"data"];
-                NSArray *remotePosts = [remoteData objectForKey:@"children"];
-                
-                
-                // Core Data Results
-                NSError *error = nil;
-                NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"WAYPost"];
-                [request setSortDescriptors:[NSArray arrayWithObject:
-                                             [NSSortDescriptor sortDescriptorWithKey:@"created" ascending:NO]]];
-                
-                NSArray *localPosts = [newMoc executeFetchRequest:request error:&error];
-                NSMutableDictionary *localPostMap = [NSMutableDictionary dictionaryWithObjects:localPosts forKeys:[localPosts valueForKey:@"postId"]];
-                
-                // Register for context save changes notification
-                NSNotificationCenter *notify = [NSNotificationCenter defaultCenter];
-                [notify addObserver:observer
-                           selector:@selector(mergeChanges:)
-                               name:NSManagedObjectContextDidSaveNotification
-                             object:newMoc];
-                
-                
-                /** START SYNCHRONIZE **/
-                
-                for (NSDictionary *remotePostData in remotePosts) {
-                    
-                    NSDictionary *remotePost = [remotePostData objectForKey:@"data"];
-                    NSString *remotePostId = [remotePost objectForKey:@"id"];
-                    
-                    // Insert
-                    if( ![[localPostMap allKeys] containsObject:remotePostId] )
-                    {
-                            WAYPost *newPost = (WAYPost *)[NSEntityDescription insertNewObjectForEntityForName:@"WAYPost" inManagedObjectContext:newMoc];
-                            newPost.postId = remotePostId;
-                            newPost.author = [remotePost objectForKey:@"author"];
-                            newPost.created = [remotePost objectForKey:@"created"];
-                            newPost.title = [remotePost objectForKey:@"title"];
-                            newPost.domain = [remotePost objectForKey:@"domain"];
-                            newPost.permalink = [remotePost objectForKey:@"permalink"];
-                            newPost.ups = [remotePost objectForKey:@"ups"];
-                            newPost.downs = [remotePost objectForKey:@"downs"];
-                            newPost.type = [NSNumber numberWithInt:[self retrievePostTypeWithPost:newPost setIsMale:YES setIsTeen:NO]];
-                            
-//                            if( [newPost.type isEqualToNumber:[NSNumber numberWithInt:INVALID]] )
-//                                [newMoc deleteObject:newPost];
-                    }
-                    // Update
-                    else
-                    {
-                        WAYPost *updatedPost = [localPostMap objectForKey:remotePostId];
-                        updatedPost.postId = remotePostId;
-                        updatedPost.author = [remotePost objectForKey:@"author"];
-                        updatedPost.created = [remotePost objectForKey:@"created"];
-                        updatedPost.title = [remotePost objectForKey:@"title"];
-                        updatedPost.domain = [remotePost objectForKey:@"domain"];
-                        updatedPost.permalink = [remotePost objectForKey:@"permalink"];
-                        updatedPost.ups = [remotePost objectForKey:@"ups"];
-                        updatedPost.downs = [remotePost objectForKey:@"downs"];
-                        updatedPost.type = [NSNumber numberWithInt:[self retrievePostTypeWithPost:updatedPost setIsMale:YES setIsTeen:NO]];
-                        
-                        [newMoc refreshObject:updatedPost mergeChanges:true];
-                        [localPostMap removeObjectForKey:remotePostId];
-                    }
-                }
-                
-                // Delete
-                for (NSString *key in localPostMap)
-                {
-                    [newMoc deleteObject:[localPostMap objectForKey:key]];
-                }
+        // The sync is a critical section
+        dispatch_semaphore_wait(self.postSyncSemaphore, DISPATCH_TIME_FOREVER);
+        
+        // Create a new managed object context
+        // Set its persistent store coordinator
+        NSManagedObjectContext *newMoc = [[NSManagedObjectContext alloc] init];
+        [newMoc setPersistentStoreCoordinator:mainThreadContextStoreCoordinator];
 
-                
-                
-                
-                if (![newMoc save:&error]) {
-                    NSLog(@"Could not save Core Data context. Error: %@, %@", error, [error userInfo]);
-                }
-                /** END SYNCHRONIZE **/
-                
-                dispatch_semaphore_signal(self.postSyncSemaphore);
-                
-            });
-            
-        } failure:^(NSURLSessionDataTask *__unused task, NSError *error) {
-            NSLog(@"failure:");
-        }];
+
         
-        i = 1;
-    }
+        // Register for context save changes notification
+        NSNotificationCenter *notify = [NSNotificationCenter defaultCenter];
+        [notify addObserver:observer
+                   selector:@selector(mergeChanges:)
+                       name:NSManagedObjectContextDidSaveNotification
+                     object:newMoc];
+        
+        
+        // Core Data Results
+        NSError *error = nil;
+        NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"WAYPost"];
+        [request setSortDescriptors:[NSArray arrayWithObject:
+                                     [NSSortDescriptor sortDescriptorWithKey:@"created" ascending:NO]]];
+        
+        NSArray *localPosts = [newMoc executeFetchRequest:request error:&error];
+        NSMutableDictionary *localPostMap = [NSMutableDictionary dictionaryWithObjects:localPosts forKeys:[localPosts valueForKey:@"postId"]];
+        
+
+        
+        /** START SYNCHRONIZE **/
+        
+        // new
+        while( after != nil && i < 1 )
+        {
+            
+            NSString *urlString = [NSString stringWithFormat:@"http://www.reddit.com/r/malefashionadvice/hot.json?t=%@&after=%@",
+                                   t,
+                                   after];
+            NSURL *url = [NSURL URLWithString:urlString];
+            
+            NSURLRequest *request = [NSURLRequest requestWithURL:url];
+            NSURLResponse *response = nil;
+            NSError *error = nil;
+            NSData *newData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
+            NSString *responseString = [[NSString alloc] initWithData:newData encoding:NSUTF8StringEncoding];
+            NSDictionary *JSON = [NSJSONSerialization JSONObjectWithData:[responseString dataUsingEncoding:NSUTF8StringEncoding] options:0 error:nil];
+            
+            
+            NSDictionary *remoteData = [JSON objectForKey:@"data"];
+            NSArray *remotePosts = [remoteData objectForKey:@"children"];
+            
+            
+            
+            for (NSDictionary *remotePostData in remotePosts) {
+                
+                NSDictionary *remotePost = [remotePostData objectForKey:@"data"];
+                NSString *remotePostId = [remotePost objectForKey:@"id"];
+                
+                // Insert
+                if( ![[localPostMap allKeys] containsObject:remotePostId] )
+                {
+                    WAYPost *newPost = (WAYPost *)[NSEntityDescription insertNewObjectForEntityForName:@"WAYPost" inManagedObjectContext:newMoc];
+                    newPost.postId = remotePostId;
+                    newPost.author = [remotePost objectForKey:@"author"];
+                    newPost.created = [remotePost objectForKey:@"created"];
+                    newPost.title = [remotePost objectForKey:@"title"];
+                    newPost.domain = [remotePost objectForKey:@"domain"];
+                    newPost.permalink = [remotePost objectForKey:@"permalink"];
+                    newPost.ups = [remotePost objectForKey:@"ups"];
+                    newPost.downs = [remotePost objectForKey:@"downs"];
+                    newPost.type = [NSNumber numberWithInt:[self retrievePostTypeWithPost:newPost setIsMale:YES setIsTeen:NO]];
+                    
+                    if( [newPost.type isEqualToNumber:[NSNumber numberWithInt:INVALID]] )
+                        [newMoc deleteObject:newPost];
+                }
+                // Update
+                else
+                {
+                    WAYPost *updatedPost = [localPostMap objectForKey:remotePostId];
+                    updatedPost.postId = remotePostId;
+                    updatedPost.author = [remotePost objectForKey:@"author"];
+                    updatedPost.created = [remotePost objectForKey:@"created"];
+                    updatedPost.title = [remotePost objectForKey:@"title"];
+                    updatedPost.domain = [remotePost objectForKey:@"domain"];
+                    updatedPost.permalink = [remotePost objectForKey:@"permalink"];
+                    updatedPost.ups = [remotePost objectForKey:@"ups"];
+                    updatedPost.downs = [remotePost objectForKey:@"downs"];
+                    updatedPost.type = [NSNumber numberWithInt:[self retrievePostTypeWithPost:updatedPost setIsMale:YES setIsTeen:NO]];
+                    
+                    [newMoc refreshObject:updatedPost mergeChanges:true];
+                    [localPostMap removeObjectForKey:remotePostId];
+                }
+            }
+            
+            after = [remoteData objectForKey:@"after"];
+            ++i;
+        }
+
+        // today
+        i = 0;
+        t = @"today";
+        after = @"";
+        
+        while( after != nil && i < 2 )
+        {
+            
+            NSString *urlString = [NSString stringWithFormat:@"http://www.reddit.com/r/malefashionadvice/top.json?t=%@&after=%@",
+                                   t,
+                                   after];
+            NSURL *url = [NSURL URLWithString:urlString];
+            
+            NSURLRequest *request = [NSURLRequest requestWithURL:url];
+            NSURLResponse *response = nil;
+            NSError *error = nil;
+            NSData *newData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
+            NSString *responseString = [[NSString alloc] initWithData:newData encoding:NSUTF8StringEncoding];
+            NSDictionary *JSON = [NSJSONSerialization JSONObjectWithData:[responseString dataUsingEncoding:NSUTF8StringEncoding] options:0 error:nil];
+            
+            
+            NSDictionary *remoteData = [JSON objectForKey:@"data"];
+            NSArray *remotePosts = [remoteData objectForKey:@"children"];
+            
+            
+            
+            for (NSDictionary *remotePostData in remotePosts) {
+                
+                NSDictionary *remotePost = [remotePostData objectForKey:@"data"];
+                NSString *remotePostId = [remotePost objectForKey:@"id"];
+                
+                // Insert
+                if( ![[localPostMap allKeys] containsObject:remotePostId] )
+                {
+                    WAYPost *newPost = (WAYPost *)[NSEntityDescription insertNewObjectForEntityForName:@"WAYPost" inManagedObjectContext:newMoc];
+                    newPost.postId = remotePostId;
+                    newPost.author = [remotePost objectForKey:@"author"];
+                    newPost.created = [remotePost objectForKey:@"created"];
+                    newPost.title = [remotePost objectForKey:@"title"];
+                    newPost.domain = [remotePost objectForKey:@"domain"];
+                    newPost.permalink = [remotePost objectForKey:@"permalink"];
+                    newPost.ups = [remotePost objectForKey:@"ups"];
+                    newPost.downs = [remotePost objectForKey:@"downs"];
+                    newPost.type = [NSNumber numberWithInt:[self retrievePostTypeWithPost:newPost setIsMale:YES setIsTeen:NO]];
+                    
+                    if( [newPost.type isEqualToNumber:[NSNumber numberWithInt:INVALID]] )
+                        [newMoc deleteObject:newPost];
+                }
+                // Update
+                else
+                {
+                    WAYPost *updatedPost = [localPostMap objectForKey:remotePostId];
+                    updatedPost.postId = remotePostId;
+                    updatedPost.author = [remotePost objectForKey:@"author"];
+                    updatedPost.created = [remotePost objectForKey:@"created"];
+                    updatedPost.title = [remotePost objectForKey:@"title"];
+                    updatedPost.domain = [remotePost objectForKey:@"domain"];
+                    updatedPost.permalink = [remotePost objectForKey:@"permalink"];
+                    updatedPost.ups = [remotePost objectForKey:@"ups"];
+                    updatedPost.downs = [remotePost objectForKey:@"downs"];
+                    updatedPost.type = [NSNumber numberWithInt:[self retrievePostTypeWithPost:updatedPost setIsMale:YES setIsTeen:NO]];
+                    
+                    [newMoc refreshObject:updatedPost mergeChanges:true];
+                    [localPostMap removeObjectForKey:remotePostId];
+                }
+            }
+            
+            after = [remoteData objectForKey:@"after"];
+            ++i;
+        }
+        
+        // week
+        i = 0;
+        t = @"week";
+        after = @"";
+        
+        while( after != nil && i < 3 )
+        {
+            
+            NSString *urlString = [NSString stringWithFormat:@"http://www.reddit.com/r/malefashionadvice/top.json?t=%@&after=%@",
+                                   t,
+                                   after];
+            NSURL *url = [NSURL URLWithString:urlString];
+            
+            NSURLRequest *request = [NSURLRequest requestWithURL:url];
+            NSURLResponse *response = nil;
+            NSError *error = nil;
+            NSData *newData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
+            NSString *responseString = [[NSString alloc] initWithData:newData encoding:NSUTF8StringEncoding];
+            NSDictionary *JSON = [NSJSONSerialization JSONObjectWithData:[responseString dataUsingEncoding:NSUTF8StringEncoding] options:0 error:nil];
+            
+            
+            NSDictionary *remoteData = [JSON objectForKey:@"data"];
+            NSArray *remotePosts = [remoteData objectForKey:@"children"];
+            
+            
+            
+            for (NSDictionary *remotePostData in remotePosts) {
+                
+                NSDictionary *remotePost = [remotePostData objectForKey:@"data"];
+                NSString *remotePostId = [remotePost objectForKey:@"id"];
+                
+                // Insert
+                if( ![[localPostMap allKeys] containsObject:remotePostId] )
+                {
+                    WAYPost *newPost = (WAYPost *)[NSEntityDescription insertNewObjectForEntityForName:@"WAYPost" inManagedObjectContext:newMoc];
+                    newPost.postId = remotePostId;
+                    newPost.author = [remotePost objectForKey:@"author"];
+                    newPost.created = [remotePost objectForKey:@"created"];
+                    newPost.title = [remotePost objectForKey:@"title"];
+                    newPost.domain = [remotePost objectForKey:@"domain"];
+                    newPost.permalink = [remotePost objectForKey:@"permalink"];
+                    newPost.ups = [remotePost objectForKey:@"ups"];
+                    newPost.downs = [remotePost objectForKey:@"downs"];
+                    newPost.type = [NSNumber numberWithInt:[self retrievePostTypeWithPost:newPost setIsMale:YES setIsTeen:NO]];
+                    
+                    if( [newPost.type isEqualToNumber:[NSNumber numberWithInt:INVALID]] )
+                        [newMoc deleteObject:newPost];
+                }
+                // Update
+                else
+                {
+                    WAYPost *updatedPost = [localPostMap objectForKey:remotePostId];
+                    updatedPost.postId = remotePostId;
+                    updatedPost.author = [remotePost objectForKey:@"author"];
+                    updatedPost.created = [remotePost objectForKey:@"created"];
+                    updatedPost.title = [remotePost objectForKey:@"title"];
+                    updatedPost.domain = [remotePost objectForKey:@"domain"];
+                    updatedPost.permalink = [remotePost objectForKey:@"permalink"];
+                    updatedPost.ups = [remotePost objectForKey:@"ups"];
+                    updatedPost.downs = [remotePost objectForKey:@"downs"];
+                    updatedPost.type = [NSNumber numberWithInt:[self retrievePostTypeWithPost:updatedPost setIsMale:YES setIsTeen:NO]];
+                    
+                    [newMoc refreshObject:updatedPost mergeChanges:true];
+                    [localPostMap removeObjectForKey:remotePostId];
+                }
+            }
+            
+            after = [remoteData objectForKey:@"after"];
+            ++i;
+        }
+        
+        
+        // month
+        i = 0;
+        t = @"month";
+        after = @"";
+        
+        while( after != nil && i < 5 )
+        {
+            
+            NSString *urlString = [NSString stringWithFormat:@"http://www.reddit.com/r/malefashionadvice/top.json?t=%@&after=%@",
+                                   t,
+                                   after];
+            NSURL *url = [NSURL URLWithString:urlString];
+            
+            NSURLRequest *request = [NSURLRequest requestWithURL:url];
+            NSURLResponse *response = nil;
+            NSError *error = nil;
+            NSData *newData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
+            NSString *responseString = [[NSString alloc] initWithData:newData encoding:NSUTF8StringEncoding];
+            NSDictionary *JSON = [NSJSONSerialization JSONObjectWithData:[responseString dataUsingEncoding:NSUTF8StringEncoding] options:0 error:nil];
+            
+            
+            NSDictionary *remoteData = [JSON objectForKey:@"data"];
+            NSArray *remotePosts = [remoteData objectForKey:@"children"];
+            
+            
+            
+            for (NSDictionary *remotePostData in remotePosts) {
+                
+                NSDictionary *remotePost = [remotePostData objectForKey:@"data"];
+                NSString *remotePostId = [remotePost objectForKey:@"id"];
+                
+                // Insert
+                if( ![[localPostMap allKeys] containsObject:remotePostId] )
+                {
+                    WAYPost *newPost = (WAYPost *)[NSEntityDescription insertNewObjectForEntityForName:@"WAYPost" inManagedObjectContext:newMoc];
+                    newPost.postId = remotePostId;
+                    newPost.author = [remotePost objectForKey:@"author"];
+                    newPost.created = [remotePost objectForKey:@"created"];
+                    newPost.title = [remotePost objectForKey:@"title"];
+                    newPost.domain = [remotePost objectForKey:@"domain"];
+                    newPost.permalink = [remotePost objectForKey:@"permalink"];
+                    newPost.ups = [remotePost objectForKey:@"ups"];
+                    newPost.downs = [remotePost objectForKey:@"downs"];
+                    newPost.type = [NSNumber numberWithInt:[self retrievePostTypeWithPost:newPost setIsMale:YES setIsTeen:NO]];
+                    
+                    if( [newPost.type isEqualToNumber:[NSNumber numberWithInt:INVALID]] )
+                        [newMoc deleteObject:newPost];
+                }
+                // Update
+                else
+                {
+                    WAYPost *updatedPost = [localPostMap objectForKey:remotePostId];
+                    updatedPost.postId = remotePostId;
+                    updatedPost.author = [remotePost objectForKey:@"author"];
+                    updatedPost.created = [remotePost objectForKey:@"created"];
+                    updatedPost.title = [remotePost objectForKey:@"title"];
+                    updatedPost.domain = [remotePost objectForKey:@"domain"];
+                    updatedPost.permalink = [remotePost objectForKey:@"permalink"];
+                    updatedPost.ups = [remotePost objectForKey:@"ups"];
+                    updatedPost.downs = [remotePost objectForKey:@"downs"];
+                    updatedPost.type = [NSNumber numberWithInt:[self retrievePostTypeWithPost:updatedPost setIsMale:YES setIsTeen:NO]];
+                    
+                    [newMoc refreshObject:updatedPost mergeChanges:true];
+                    [localPostMap removeObjectForKey:remotePostId];
+                }
+            }
+            
+            after = [remoteData objectForKey:@"after"];
+            ++i;
+        }
+        
+        
+        // Delete
+        for (NSString *key in localPostMap)
+        {
+            [newMoc deleteObject:[localPostMap objectForKey:key]];
+        }
+        
+        /** END SYNCHRONIZE **/
+        
+        if (![newMoc save:&error]) {
+            NSLog(@"Could not save Core Data context. Error: %@, %@", error, [error userInfo]);
+        }
+
+        
+        dispatch_semaphore_signal(self.postSyncSemaphore);
+    });
     
-//    
+
+//
 //    [[WAYApiClient sharedClient] GET:@"shops" parameters:nil success:^(NSURLSessionDataTask * __unused task, id JSON) {
-//        
+//
 //        if ([JSON isFOAPIStatusOK]) {
-//            
+//
 //            // Background thread for sync
 //            NSPersistentStoreCoordinator *mainThreadContextStoreCoordinator = [moc persistentStoreCoordinator];
 //            dispatch_queue_t request_queue = dispatch_queue_create("com.frankandoak.com.syncCategories", NULL);
@@ -305,7 +526,7 @@ enum PostType : NSUInteger {
         }
     }
     
-    if( [post.title rangeOfString:@"waywt"].location != NSNotFound)
+    if( [[post.title lowercaseString] rangeOfString:@"waywt"].location != NSNotFound)
         return WAYWT;
     else if( [[post.title lowercaseString] rangeOfString:@"outfit feedback"].location != NSNotFound )
         return OUTFIT_FEEDBACK;
