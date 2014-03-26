@@ -68,6 +68,9 @@ enum PostType : NSUInteger {
         
         /** START SYNCHRONIZE **/
         
+        NSMutableDictionary *remotePostsSyncedMap = [[NSMutableDictionary alloc] init];
+
+        
         // new
         while( after != nil && i < 1 )
         {
@@ -92,9 +95,14 @@ enum PostType : NSUInteger {
             
             for (NSDictionary *remotePostData in remotePosts) {
                 
+                
                 NSDictionary *remotePost = [remotePostData objectForKey:@"data"];
                 NSString *remotePostId = [remotePost objectForKey:@"id"];
                 
+                // check for duplicate posts
+                if( [[remotePostsSyncedMap allKeys] containsObject:remotePostId] )
+                    continue;
+                                    
                 // Insert
                 if( ![[localPostMap allKeys] containsObject:remotePostId] )
                 {
@@ -129,6 +137,8 @@ enum PostType : NSUInteger {
                     [newMoc refreshObject:updatedPost mergeChanges:true];
                     [localPostMap removeObjectForKey:remotePostId];
                 }
+                
+                [remotePostsSyncedMap setObject:remotePost forKey:remotePostId];
             }
             
             after = [remoteData objectForKey:@"after"];
@@ -166,6 +176,10 @@ enum PostType : NSUInteger {
                 NSDictionary *remotePost = [remotePostData objectForKey:@"data"];
                 NSString *remotePostId = [remotePost objectForKey:@"id"];
                 
+                // check for duplicate posts
+                if( [[remotePostsSyncedMap allKeys] containsObject:remotePostId] )
+                    continue;
+                
                 // Insert
                 if( ![[localPostMap allKeys] containsObject:remotePostId] )
                 {
@@ -200,6 +214,8 @@ enum PostType : NSUInteger {
                     [newMoc refreshObject:updatedPost mergeChanges:true];
                     [localPostMap removeObjectForKey:remotePostId];
                 }
+                
+                [remotePostsSyncedMap setObject:remotePost forKey:remotePostId];
             }
             
             after = [remoteData objectForKey:@"after"];
@@ -237,6 +253,10 @@ enum PostType : NSUInteger {
                 NSDictionary *remotePost = [remotePostData objectForKey:@"data"];
                 NSString *remotePostId = [remotePost objectForKey:@"id"];
                 
+                // check for duplicate posts
+                if( [[remotePostsSyncedMap allKeys] containsObject:remotePostId] )
+                    continue;
+                
                 // Insert
                 if( ![[localPostMap allKeys] containsObject:remotePostId] )
                 {
@@ -271,6 +291,8 @@ enum PostType : NSUInteger {
                     [newMoc refreshObject:updatedPost mergeChanges:true];
                     [localPostMap removeObjectForKey:remotePostId];
                 }
+                
+                [remotePostsSyncedMap setObject:remotePost forKey:remotePostId];
             }
             
             after = [remoteData objectForKey:@"after"];
@@ -309,6 +331,10 @@ enum PostType : NSUInteger {
                 NSDictionary *remotePost = [remotePostData objectForKey:@"data"];
                 NSString *remotePostId = [remotePost objectForKey:@"id"];
                 
+                // check for duplicate posts
+                if( [[remotePostsSyncedMap allKeys] containsObject:remotePostId] )
+                    continue;
+                
                 // Insert
                 if( ![[localPostMap allKeys] containsObject:remotePostId] )
                 {
@@ -343,6 +369,8 @@ enum PostType : NSUInteger {
                     [newMoc refreshObject:updatedPost mergeChanges:true];
                     [localPostMap removeObjectForKey:remotePostId];
                 }
+                
+                [remotePostsSyncedMap setObject:remotePost forKey:remotePostId];
             }
             
             after = [remoteData objectForKey:@"after"];

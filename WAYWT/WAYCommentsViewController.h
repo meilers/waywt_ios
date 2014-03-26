@@ -7,10 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "WAYPost.h"
 
 @interface WAYCommentsViewController : UIViewController <UISplitViewControllerDelegate>
 
-@property (strong, nonatomic) id detailItem;
+@property (strong, nonatomic) WAYPost *detailItem;
 
 @property (weak, nonatomic) IBOutlet UILabel *detailDescriptionLabel;
 @end
