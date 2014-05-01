@@ -21,7 +21,7 @@ enum PostType : NSUInteger {
 
 @implementation WAYPostUtility
 
-+ (void)fetchAndSyncPostsWithContext:(NSManagedObjectContext*)moc setObserver:(NSObject*)observer
++ (void)syncPostsForSubreddit:(NSString*)subreddit context:(NSManagedObjectContext*)moc observer:(NSObject*)observer
 {
     
     __block NSString *t = @"";
@@ -29,7 +29,6 @@ enum PostType : NSUInteger {
     
     __block int i = 0;
     
-    // Background thread for sync
     NSPersistentStoreCoordinator *mainThreadContextStoreCoordinator = [moc persistentStoreCoordinator];
     
     // Background thread for sync
@@ -115,7 +114,8 @@ enum PostType : NSUInteger {
                     newPost.permalink = [remotePost objectForKey:@"permalink"];
                     newPost.ups = [remotePost objectForKey:@"ups"];
                     newPost.downs = [remotePost objectForKey:@"downs"];
-                    newPost.type = [NSNumber numberWithInt:[self retrievePostTypeWithPost:newPost setIsMale:YES setIsTeen:NO]];
+                    newPost.subreddit = subreddit;
+                    newPost.type = [NSNumber numberWithInt:[self retrievePostTypeWithPost:newPost]];
                     
                     if( [newPost.type isEqualToNumber:[NSNumber numberWithInt:INVALID]] )
                         [newMoc deleteObject:newPost];
@@ -132,7 +132,8 @@ enum PostType : NSUInteger {
                     updatedPost.permalink = [remotePost objectForKey:@"permalink"];
                     updatedPost.ups = [remotePost objectForKey:@"ups"];
                     updatedPost.downs = [remotePost objectForKey:@"downs"];
-                    updatedPost.type = [NSNumber numberWithInt:[self retrievePostTypeWithPost:updatedPost setIsMale:YES setIsTeen:NO]];
+                    updatedPost.subreddit = subreddit;
+                    updatedPost.type = [NSNumber numberWithInt:[self retrievePostTypeWithPost:updatedPost]];
                     
                     [newMoc refreshObject:updatedPost mergeChanges:true];
                     [localPostMap removeObjectForKey:remotePostId];
@@ -192,7 +193,8 @@ enum PostType : NSUInteger {
                     newPost.permalink = [remotePost objectForKey:@"permalink"];
                     newPost.ups = [remotePost objectForKey:@"ups"];
                     newPost.downs = [remotePost objectForKey:@"downs"];
-                    newPost.type = [NSNumber numberWithInt:[self retrievePostTypeWithPost:newPost setIsMale:YES setIsTeen:NO]];
+                    newPost.subreddit = subreddit;
+                    newPost.type = [NSNumber numberWithInt:[self retrievePostTypeWithPost:newPost]];
                     
                     if( [newPost.type isEqualToNumber:[NSNumber numberWithInt:INVALID]] )
                         [newMoc deleteObject:newPost];
@@ -209,7 +211,8 @@ enum PostType : NSUInteger {
                     updatedPost.permalink = [remotePost objectForKey:@"permalink"];
                     updatedPost.ups = [remotePost objectForKey:@"ups"];
                     updatedPost.downs = [remotePost objectForKey:@"downs"];
-                    updatedPost.type = [NSNumber numberWithInt:[self retrievePostTypeWithPost:updatedPost setIsMale:YES setIsTeen:NO]];
+                    updatedPost.subreddit = subreddit;
+                    updatedPost.type = [NSNumber numberWithInt:[self retrievePostTypeWithPost:updatedPost]];
                     
                     [newMoc refreshObject:updatedPost mergeChanges:true];
                     [localPostMap removeObjectForKey:remotePostId];
@@ -269,7 +272,8 @@ enum PostType : NSUInteger {
                     newPost.permalink = [remotePost objectForKey:@"permalink"];
                     newPost.ups = [remotePost objectForKey:@"ups"];
                     newPost.downs = [remotePost objectForKey:@"downs"];
-                    newPost.type = [NSNumber numberWithInt:[self retrievePostTypeWithPost:newPost setIsMale:YES setIsTeen:NO]];
+                    newPost.subreddit = subreddit;
+                    newPost.type = [NSNumber numberWithInt:[self retrievePostTypeWithPost:newPost]];
                     
                     if( [newPost.type isEqualToNumber:[NSNumber numberWithInt:INVALID]] )
                         [newMoc deleteObject:newPost];
@@ -286,7 +290,8 @@ enum PostType : NSUInteger {
                     updatedPost.permalink = [remotePost objectForKey:@"permalink"];
                     updatedPost.ups = [remotePost objectForKey:@"ups"];
                     updatedPost.downs = [remotePost objectForKey:@"downs"];
-                    updatedPost.type = [NSNumber numberWithInt:[self retrievePostTypeWithPost:updatedPost setIsMale:YES setIsTeen:NO]];
+                    updatedPost.subreddit = subreddit;
+                    updatedPost.type = [NSNumber numberWithInt:[self retrievePostTypeWithPost:updatedPost]];
                     
                     [newMoc refreshObject:updatedPost mergeChanges:true];
                     [localPostMap removeObjectForKey:remotePostId];
@@ -347,7 +352,8 @@ enum PostType : NSUInteger {
                     newPost.permalink = [remotePost objectForKey:@"permalink"];
                     newPost.ups = [remotePost objectForKey:@"ups"];
                     newPost.downs = [remotePost objectForKey:@"downs"];
-                    newPost.type = [NSNumber numberWithInt:[self retrievePostTypeWithPost:newPost setIsMale:YES setIsTeen:NO]];
+                    newPost.subreddit = subreddit;
+                    newPost.type = [NSNumber numberWithInt:[self retrievePostTypeWithPost:newPost]];
                     
                     if( [newPost.type isEqualToNumber:[NSNumber numberWithInt:INVALID]] )
                         [newMoc deleteObject:newPost];
@@ -364,7 +370,8 @@ enum PostType : NSUInteger {
                     updatedPost.permalink = [remotePost objectForKey:@"permalink"];
                     updatedPost.ups = [remotePost objectForKey:@"ups"];
                     updatedPost.downs = [remotePost objectForKey:@"downs"];
-                    updatedPost.type = [NSNumber numberWithInt:[self retrievePostTypeWithPost:updatedPost setIsMale:YES setIsTeen:NO]];
+                    updatedPost.subreddit = subreddit;
+                    updatedPost.type = [NSNumber numberWithInt:[self retrievePostTypeWithPost:updatedPost]];
                     
                     [newMoc refreshObject:updatedPost mergeChanges:true];
                     [localPostMap removeObjectForKey:remotePostId];
@@ -394,164 +401,30 @@ enum PostType : NSUInteger {
         dispatch_semaphore_signal(self.postSyncSemaphore);
     });
     
-
-//
-//    [[WAYApiClient sharedClient] GET:@"shops" parameters:nil success:^(NSURLSessionDataTask * __unused task, id JSON) {
-//
-//        if ([JSON isFOAPIStatusOK]) {
-//
-//            // Background thread for sync
-//            NSPersistentStoreCoordinator *mainThreadContextStoreCoordinator = [moc persistentStoreCoordinator];
-//            dispatch_queue_t request_queue = dispatch_queue_create("com.frankandoak.com.syncCategories", NULL);
-//            
-//            dispatch_async(request_queue, ^{
-//                
-//                
-//                // The sync is a critical section
-//                dispatch_semaphore_wait(self.categorySyncSemaphore, DISPATCH_TIME_FOREVER);
-//                
-//                // Create a new managed object context
-//                // Set its persistent store coordinator
-//                NSManagedObjectContext *newMoc = [[NSManagedObjectContext alloc] init];
-//                [newMoc setPersistentStoreCoordinator:mainThreadContextStoreCoordinator];
-//                
-//                
-//                // Web Service Results
-//                NSDictionary *responseDict = [JSON FOAPIResponse];
-//                NSArray *storeList = [responseDict objectForKey:@"stores"];
-//                NSArray *subshopList = [responseDict objectForKey:@"subshops"];
-//                
-//                // Core Data Results
-//                NSError *error = nil;
-//                NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"MAOCategory"];
-//                [request setSortDescriptors:[NSArray arrayWithObject:
-//                                             [NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:NO]]];
-//                
-//                NSArray *categories = [newMoc executeFetchRequest:request error:&error];
-//                NSMutableDictionary *categorytMap = [NSMutableDictionary dictionaryWithObjects:categories forKeys:[categories valueForKey:@"categoryId"]];
-//                
-//                
-//                
-//                
-//                // Register for context save changes notification
-//                NSNotificationCenter *notify = [NSNotificationCenter defaultCenter];
-//                [notify addObserver:observer
-//                           selector:@selector(mergeChanges:)
-//                               name:NSManagedObjectContextDidSaveNotification
-//                             object:newMoc];
-//                
-//                
-//                /** START SYNCHRONIZE **/
-//                for (NSDictionary *catDict in storeList) {
-//                    
-//                    NSNumber *catId = [catDict objectForKey:@"store_id"];
-//                    
-//                    // Insert
-//                    if( ![[categorytMap allKeys] containsObject:catId] )
-//                    {
-//                        MAOCategory *newCat = (MAOCategory *)[NSEntityDescription insertNewObjectForEntityForName:@"MAOCategory" inManagedObjectContext:newMoc];
-//                        newCat.categoryId = [catDict objectForKey:@"store_id"];
-//                        newCat.name = [catDict objectForKey:@"store_name"];
-//                        newCat.imageUrl = [catDict objectForKey:@"store_image_url"];
-//                        newCat.isStore = [NSNumber numberWithInt:1];
-//                        newCat.timestamp = [[NSDate alloc] init];
-//                        
-//                    }
-//                    // Update
-//                    else
-//                    {
-//                        MAOCategory *updatedCat = [categorytMap objectForKey:catId];
-//                        updatedCat.categoryId = [catDict objectForKey:@"store_id"];
-//                        updatedCat.name = [catDict objectForKey:@"store_name"];
-//                        updatedCat.imageUrl = [catDict objectForKey:@"store_image_url"];
-//                        updatedCat.timestamp = [[NSDate alloc] init];
-//                        updatedCat.isStore = [NSNumber numberWithInt:1];
-//                        
-//                        [newMoc refreshObject:updatedCat mergeChanges:true];
-//                        [categorytMap removeObjectForKey:catId];
-//                    }
-//                }
-//                
-//                for (NSDictionary *catDict in subshopList) {
-//                    
-//                    NSNumber *catId = [catDict objectForKey:@"subshop_id"];
-//                    
-//                    // Insert
-//                    if( ![[categorytMap allKeys] containsObject:catId] )
-//                    {
-//                        MAOCategory *newCat = (MAOCategory *)[NSEntityDescription insertNewObjectForEntityForName:@"MAOCategory" inManagedObjectContext:newMoc];
-//                        newCat.categoryId = [catDict objectForKey:@"subshop_id"];
-//                        newCat.name = [catDict objectForKey:@"subshop_title"];
-//                        newCat.imageUrl = [catDict objectForKey:@"subshop_image_url"];
-//                        newCat.isStore = newCat.isStore = [NSNumber numberWithInt:0];
-//                        newCat.timestamp = [[NSDate alloc] init];
-//                        
-//                    }
-//                    // Update
-//                    else
-//                    {
-//                        MAOCategory *updatedCat = [categorytMap objectForKey:catId];
-//                        updatedCat.categoryId = [catDict objectForKey:@"subshop_id"];
-//                        updatedCat.name = [catDict objectForKey:@"subshop_title"];
-//                        updatedCat.imageUrl = [catDict objectForKey:@"subshop_image_url"];
-//                        updatedCat.isStore = [NSNumber numberWithInt:0];
-//                        updatedCat.timestamp = [[NSDate alloc] init];
-//                        
-//                        [newMoc refreshObject:updatedCat mergeChanges:true];
-//                        [categorytMap removeObjectForKey:catId];
-//                    }
-//                }
-//                
-//                // Delete
-//                for (NSString *key in categorytMap)
-//                {
-//                    [newMoc deleteObject:[categorytMap objectForKey:key]];
-//                }
-//                
-//                if (![newMoc save:&error]) {
-//                    NSLog(@"Could not save Core Data context. Error: %@, %@", error, [error userInfo]);
-//                }
-//                /** END SYNCHRONIZE **/
-//                
-//                dispatch_semaphore_signal(self.categorySyncSemaphore);
-//                
-//            });
-//            
-//            
-//        }
-//    } failure:^(NSURLSessionDataTask *__unused task, NSError *error) {
-//        
-//    }];
 }
 
 
-+ (int)retrievePostTypeWithPost:(WAYPost*)post setIsMale:(BOOL)isMale setIsTeen:(BOOL)isTeen
++ (int)retrievePostTypeWithPost:(WAYPost*)post
 {
-	if( isMale )
+	if( [post.subreddit isEqualToString:@"malefashionadvice"] )
     {
-        if( !isTeen )
-        {
-            if( ![post.domain isEqualToString:@"self.malefashionadvice"] || [[post.title lowercaseString] rangeOfString:@"announcement"].location != NSNotFound || [[post.title lowercaseString] rangeOfString:@"phone"].location != NSNotFound || [[post.title lowercaseString] rangeOfString:@"interest"].location != NSNotFound || [[post.title lowercaseString] rangeOfString:@"top"].location != NSNotFound || ([[post.title lowercaseString] rangeOfString:@"waywt"].location == NSNotFound && [[post.title lowercaseString] rangeOfString:@"outfit feedback"].location == NSNotFound && [[post.title lowercaseString] rangeOfString:@"recent purchases"].location == NSNotFound) )
-                return INVALID;
-        }
-        else
-        {
-            if( ![post.domain isEqualToString:@"self.TeenMFA"] || [[post.title lowercaseString] rangeOfString:@"announcement"].location != NSNotFound || [[post.title lowercaseString] rangeOfString:@"phone"].location != NSNotFound || [[post.title lowercaseString] rangeOfString:@"interest"].location != NSNotFound || [[post.title lowercaseString] rangeOfString:@"top"].location != NSNotFound || ([[post.title lowercaseString] rangeOfString:@"waywt"].location == NSNotFound && [[post.title lowercaseString] rangeOfString:@"outfit feedback"].location == NSNotFound && [[post.title lowercaseString] rangeOfString:@"recent purchases"].location == NSNotFound) )
-                return INVALID;
-        }
+        if( ![post.domain isEqualToString:@"self.malefashionadvice"] || [[post.title lowercaseString] rangeOfString:@"announcement"].location != NSNotFound || [[post.title lowercaseString] rangeOfString:@"phone"].location != NSNotFound || [[post.title lowercaseString] rangeOfString:@"interest"].location != NSNotFound || [[post.title lowercaseString] rangeOfString:@"top"].location != NSNotFound || ([[post.title lowercaseString] rangeOfString:@"waywt"].location == NSNotFound && [[post.title lowercaseString] rangeOfString:@"outfit feedback"].location == NSNotFound && [[post.title lowercaseString] rangeOfString:@"recent purchases"].location == NSNotFound) )
+            return INVALID;
     }
-    else
+    else if( [post.subreddit isEqualToString:@"TeenMFA"] )
     {
-        if( !isTeen )
-        {
-            if( ![post.domain isEqualToString:@"self.femalefashionadvice"] || [[post.title lowercaseString] rangeOfString:@"announcement"].location != NSNotFound || [[post.title lowercaseString] rangeOfString:@"phone"].location != NSNotFound || [[post.title lowercaseString] rangeOfString:@"interest"].location != NSNotFound || [[post.title lowercaseString] rangeOfString:@"top"].location != NSNotFound || ([[post.title lowercaseString] rangeOfString:@"waywt"].location == NSNotFound && [[post.title lowercaseString] rangeOfString:@"outfit feedback"].location == NSNotFound && [[post.title lowercaseString] rangeOfString:@"recent purchases"].location == NSNotFound) )
-                return INVALID;
-        }
-        else
-        {
-            if( ![post.domain isEqualToString:@"self.TeenFFA"] || [[post.title lowercaseString] rangeOfString:@"announcement"].location != NSNotFound || [[post.title lowercaseString] rangeOfString:@"phone"].location != NSNotFound || [[post.title lowercaseString] rangeOfString:@"interest"].location != NSNotFound || [[post.title lowercaseString] rangeOfString:@"top"].location != NSNotFound || ([[post.title lowercaseString] rangeOfString:@"waywt"].location == NSNotFound && [[post.title lowercaseString] rangeOfString:@"outfit feedback"].location == NSNotFound && [[post.title lowercaseString] rangeOfString:@"recent purchases"].location == NSNotFound) )
-                return INVALID;
-        }
+        if( ![post.domain isEqualToString:@"self.TeenMFA"] || [[post.title lowercaseString] rangeOfString:@"announcement"].location != NSNotFound || [[post.title lowercaseString] rangeOfString:@"phone"].location != NSNotFound || [[post.title lowercaseString] rangeOfString:@"interest"].location != NSNotFound || [[post.title lowercaseString] rangeOfString:@"top"].location != NSNotFound || ([[post.title lowercaseString] rangeOfString:@"waywt"].location == NSNotFound && [[post.title lowercaseString] rangeOfString:@"outfit feedback"].location == NSNotFound && [[post.title lowercaseString] rangeOfString:@"recent purchases"].location == NSNotFound) )
+            return INVALID;
+    }
+    else if( [post.subreddit isEqualToString:@"femalefashionadvice"] )
+    {
+        if( ![post.domain isEqualToString:@"self.femalefashionadvice"] || [[post.title lowercaseString] rangeOfString:@"announcement"].location != NSNotFound || [[post.title lowercaseString] rangeOfString:@"phone"].location != NSNotFound || [[post.title lowercaseString] rangeOfString:@"interest"].location != NSNotFound || [[post.title lowercaseString] rangeOfString:@"top"].location != NSNotFound || ([[post.title lowercaseString] rangeOfString:@"waywt"].location == NSNotFound && [[post.title lowercaseString] rangeOfString:@"outfit feedback"].location == NSNotFound && [[post.title lowercaseString] rangeOfString:@"recent purchases"].location == NSNotFound) )
+            return INVALID;
+    }
+    else if( [post.subreddit isEqualToString:@"TeenFFA"] )
+    {
+        if( ![post.domain isEqualToString:@"self.TeenFFA"] || [[post.title lowercaseString] rangeOfString:@"announcement"].location != NSNotFound || [[post.title lowercaseString] rangeOfString:@"phone"].location != NSNotFound || [[post.title lowercaseString] rangeOfString:@"interest"].location != NSNotFound || [[post.title lowercaseString] rangeOfString:@"top"].location != NSNotFound || ([[post.title lowercaseString] rangeOfString:@"waywt"].location == NSNotFound && [[post.title lowercaseString] rangeOfString:@"outfit feedback"].location == NSNotFound && [[post.title lowercaseString] rangeOfString:@"recent purchases"].location == NSNotFound) )
+            return INVALID;
     }
     
     if( [[post.title lowercaseString] rangeOfString:@"waywt"].location != NSNotFound)

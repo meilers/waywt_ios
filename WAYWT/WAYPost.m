@@ -2,7 +2,7 @@
 //  WAYPost.m
 //  WAYWT
 //
-//  Created by Michael J. Eilers Smith on 2014-03-13.
+//  Created by Michael J. Eilers Smith on 2014-04-30.
 //  Copyright (c) 2014 Michael J. Eilers Smith. All rights reserved.
 //
 
@@ -13,14 +13,13 @@
 
 @dynamic author;
 @dynamic created;
+@dynamic domain;
 @dynamic downs;
-@dynamic isMale;
-@dynamic isTeen;
 @dynamic permalink;
 @dynamic postId;
 @dynamic title;
 @dynamic type;
 @dynamic ups;
-@dynamic domain;
+@dynamic subreddit;
 
 @end

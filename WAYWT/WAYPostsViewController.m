@@ -36,15 +36,15 @@
 //    UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(insertNewObject:)];
 //    self.navigationItem.rightBarButtonItem = addButton;
     self.detailViewController = (WAYCommentsViewController *)[[self.splitViewController.viewControllers lastObject] topViewController];
+    [self.detailViewController setManagedObjectContext:self.managedObjectContext];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
     // Sync with web service
-    [WAYPostUtility fetchAndSyncPostsWithContext:[self.fetchedResultsController managedObjectContext] setObserver:self];
+    [WAYPostUtility syncPostsForSubreddit:@"malefashionadvice" context:[self.fetchedResultsController managedObjectContext] observer:self];
 }
-
 
 - (void)didReceiveMemoryWarning
 {
@@ -103,8 +103,10 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+        NSLog(@"what:");
         WAYPost *post = [self.fetchedResultsController objectAtIndexPath:indexPath];
-        self.detailViewController.detailItem = post;
+        self.detailViewController.post = post;
+        [self.detailViewController setManagedObjectContext:self.managedObjectContext];
     }
 }
 
@@ -112,8 +114,10 @@
 {
     if ([[segue identifier] isEqualToString:@"showDetail"]) {
         NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
-        NSManagedObject *object = [[self fetchedResultsController] objectAtIndexPath:indexPath];
-        [[segue destinationViewController] setDetailItem:object];
+        WAYPost *object = [[self fetchedResultsController] objectAtIndexPath:indexPath];
+        [[segue destinationViewController] setPost:object];
+        [[segue destinationViewController] setManagedObjectContext:self.managedObjectContext];
+
     }
 }
 

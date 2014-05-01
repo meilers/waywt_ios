@@ -11,7 +11,11 @@
 
 @interface WAYCommentsViewController : UIViewController <UISplitViewControllerDelegate>
 
-@property (strong, nonatomic) WAYPost *detailItem;
+@property (strong, nonatomic) WAYPost *post;
 
 @property (weak, nonatomic) IBOutlet UILabel *detailDescriptionLabel;
+
+@property (strong, nonatomic) NSFetchedResultsController *fetchedResultsController;
+@property (strong, nonatomic) NSManagedObjectContext *managedObjectContext;
+
 @end

@@ -8,10 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		17806FB50D184DF5A4BBE664 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 42704FCF12064064A33F59AA /* libPods.a */; };
+		FA1118331911D76600A3317C /* WAYPost.m in Sources */ = {isa = PBXBuildFile; fileRef = FA1118321911D76600A3317C /* WAYPost.m */; };
+		FA5911C61905F9ED0058D4E3 /* WAYCommentUtility.m in Sources */ = {isa = PBXBuildFile; fileRef = FA5911C51905F9ED0058D4E3 /* WAYCommentUtility.m */; };
 		FA5E6E9218CD101300E48855 /* WAYApiClient.m in Sources */ = {isa = PBXBuildFile; fileRef = FA5E6E9118CD101300E48855 /* WAYApiClient.m */; };
 		FAC6B45818CD463400583426 /* WAYPostUtility.m in Sources */ = {isa = PBXBuildFile; fileRef = FAC6B45718CD463400583426 /* WAYPostUtility.m */; };
 		FAC6B46418CD56B100583426 /* WAYComment.m in Sources */ = {isa = PBXBuildFile; fileRef = FAC6B46318CD56B100583426 /* WAYComment.m */; };
-		FAD3EF2D18D2AC1300BF755D /* WAYPost.m in Sources */ = {isa = PBXBuildFile; fileRef = FAD3EF2C18D2AC1300BF755D /* WAYPost.m */; };
 		FAE7D1EA18CD0CF3005A5142 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FAE7D1E918CD0CF3005A5142 /* Foundation.framework */; };
 		FAE7D1EC18CD0CF3005A5142 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FAE7D1EB18CD0CF3005A5142 /* CoreGraphics.framework */; };
 		FAE7D1EE18CD0CF3005A5142 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FAE7D1ED18CD0CF3005A5142 /* UIKit.framework */; };
@@ -46,14 +47,16 @@
 /* Begin PBXFileReference section */
 		28C38DBB8215495A93A4EA44 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 		42704FCF12064064A33F59AA /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		FA1118311911D76600A3317C /* WAYPost.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAYPost.h; sourceTree = "<group>"; };
+		FA1118321911D76600A3317C /* WAYPost.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAYPost.m; sourceTree = "<group>"; };
+		FA5911C41905F9ED0058D4E3 /* WAYCommentUtility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAYCommentUtility.h; sourceTree = "<group>"; };
+		FA5911C51905F9ED0058D4E3 /* WAYCommentUtility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAYCommentUtility.m; sourceTree = "<group>"; };
 		FA5E6E9018CD101300E48855 /* WAYApiClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAYApiClient.h; sourceTree = "<group>"; };
 		FA5E6E9118CD101300E48855 /* WAYApiClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAYApiClient.m; sourceTree = "<group>"; };
 		FAC6B45618CD463400583426 /* WAYPostUtility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAYPostUtility.h; sourceTree = "<group>"; };
 		FAC6B45718CD463400583426 /* WAYPostUtility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAYPostUtility.m; sourceTree = "<group>"; };
 		FAC6B46218CD56B100583426 /* WAYComment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAYComment.h; sourceTree = "<group>"; };
 		FAC6B46318CD56B100583426 /* WAYComment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAYComment.m; sourceTree = "<group>"; };
-		FAD3EF2B18D2AC1300BF755D /* WAYPost.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAYPost.h; sourceTree = "<group>"; };
-		FAD3EF2C18D2AC1300BF755D /* WAYPost.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAYPost.m; sourceTree = "<group>"; };
 		FAE7D1E618CD0CF3005A5142 /* WAYWT.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WAYWT.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FAE7D1E918CD0CF3005A5142 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		FAE7D1EB18CD0CF3005A5142 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -130,8 +133,8 @@
 			children = (
 				FAC6B46218CD56B100583426 /* WAYComment.h */,
 				FAC6B46318CD56B100583426 /* WAYComment.m */,
-				FAD3EF2B18D2AC1300BF755D /* WAYPost.h */,
-				FAD3EF2C18D2AC1300BF755D /* WAYPost.m */,
+				FA1118311911D76600A3317C /* WAYPost.h */,
+				FA1118321911D76600A3317C /* WAYPost.m */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -141,6 +144,8 @@
 			children = (
 				FAC6B45618CD463400583426 /* WAYPostUtility.h */,
 				FAC6B45718CD463400583426 /* WAYPostUtility.m */,
+				FA5911C41905F9ED0058D4E3 /* WAYCommentUtility.h */,
+				FA5911C51905F9ED0058D4E3 /* WAYCommentUtility.m */,
 			);
 			name = Utilities;
 			sourceTree = "<group>";
@@ -370,13 +375,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				FAE7D20818CD0CF3005A5142 /* WAYPostsViewController.m in Sources */,
+				FA1118331911D76600A3317C /* WAYPost.m in Sources */,
 				FAE7D20518CD0CF3005A5142 /* WAYWT.xcdatamodeld in Sources */,
+				FA5911C61905F9ED0058D4E3 /* WAYCommentUtility.m in Sources */,
 				FAE7D20B18CD0CF3005A5142 /* WAYCommentsViewController.m in Sources */,
 				FAE7D1FC18CD0CF3005A5142 /* WAYAppDelegate.m in Sources */,
 				FAE7D1F818CD0CF3005A5142 /* main.m in Sources */,
 				FAC6B45818CD463400583426 /* WAYPostUtility.m in Sources */,
 				FAC6B46418CD56B100583426 /* WAYComment.m in Sources */,
-				FAD3EF2D18D2AC1300BF755D /* WAYPost.m in Sources */,
 				FA5E6E9218CD101300E48855 /* WAYApiClient.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

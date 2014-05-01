@@ -13,6 +13,6 @@
 @interface WAYPostUtility : NSObject
 
 
-+ (void)fetchAndSyncPostsWithContext:(NSManagedObjectContext*)moc setObserver:(NSObject*)observer;
++ (void)syncPostsForSubreddit:(NSString*)subreddit context:(NSManagedObjectContext*)moc observer:(NSObject*)observer;
 
 @end
